@@ -7,6 +7,9 @@
 # page and the nginx site are brought up to date. Ends with one sync run.
 # SPDX-License-Identifier: Apache-2.0
 set -eu
+# Files this script writes must be readable for others (apt reads keys as the user _apt, nginx
+# serves as www-data), whatever root's own umask is.
+umask 022
 cd "$(dirname "$0")/.."
 
 user=azentrius-packages
@@ -23,6 +26,7 @@ if ! gh attestation verify --help > /dev/null 2>&1; then
     # GitHub CLI from its own signed APT repository (the distribution's gh may be too old).
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
         -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+    chmod 644 /usr/share/keyrings/githubcli-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
         > /etc/apt/sources.list.d/github-cli.list
     apt-get update -qq
