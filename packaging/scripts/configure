@@ -1,0 +1,23 @@
+# shellcheck shell=sh
+# After every install and upgrade of azentrius-repository (as root): point apt or dnf at the
+# repository. The key and the catalog come with the package.
+# SPDX-License-Identifier: Apache-2.0
+if [ -d /etc/apt/sources.list.d ]; then
+    cat > /etc/apt/sources.list.d/azentrius.sources << 'EOF'
+Types: deb
+URIs: https://packages.azentrius.de/apt
+Suites: stable
+Components: main
+Signed-By: /usr/share/keyrings/azentrius.asc
+EOF
+fi
+if [ -d /etc/yum.repos.d ]; then
+    cat > /etc/yum.repos.d/azentrius.repo << 'EOF'
+[azentrius]
+name=Azentrius Cockpit add-ons
+baseurl=https://packages.azentrius.de/rpm
+enabled=1
+gpgcheck=1
+gpgkey=file:///usr/share/keyrings/azentrius.asc
+EOF
+fi

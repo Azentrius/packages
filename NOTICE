@@ -1,0 +1,7 @@
+Azentrius packages
+Copyright 2026 Azentrius
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+The AppStream catalog (repository/azentrius.xml) is metadata under CC0-1.0.
+The public signing key (repository/azentrius.asc) belongs to the repository
+packages.azentrius.de.

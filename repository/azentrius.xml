@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!-- AppStream catalog of the Azentrius Cockpit add-ons, installed to /usr/share/swcatalog/xml/.
+     Cockpit lists every component here under Applications and installs it by its pkgname.
+     Keep each entry in step with packaging/*.metainfo.xml of its add-on. -->
+<components version="0.16" origin="azentrius">
+  <component type="addon">
+    <id>de.azentrius.cronjobs</id>
+    <pkgname>cockpit-cronjobs</pkgname>
+    <name>Cron Jobs</name>
+    <summary>Every cron job and systemd timer in one place</summary>
+    <summary xml:lang="de">Alle Cron-Jobs und systemd-Timer an einem Ort</summary>
+    <description>
+      <p>
+        A Cockpit page for cron. It shows everything that is scheduled on the server, with a
+        timeline of the next 24 hours, changes the root crontab safely and keeps backups of it,
+        records the result of every run, starts jobs on demand and turns cron jobs into systemd
+        timers and back.
+      </p>
+      <p xml:lang="de">
+        Eine Cockpit-Seite für cron. Sie zeigt alles, was auf dem Server geplant ist, mit einer
+        Zeitleiste der nächsten 24 Stunden, ändert die Root-Crontab sicher und sichert sie, hält
+        das Ergebnis jedes Laufs fest, startet Jobs auf Knopfdruck und macht aus Cron-Jobs
+        systemd-Timer und wieder zurück.
+      </p>
+    </description>
+    <extends>org.cockpit_project.cockpit</extends>
+    <launchable type="cockpit-manifest">cronjobs</launchable>
+    <url type="homepage">https://github.com/Azentrius/cockpit-cronjobs</url>
+    <url type="bugtracker">https://github.com/Azentrius/cockpit-cronjobs/issues</url>
+    <project_license>Apache-2.0</project_license>
+    <developer id="de.azentrius">
+      <name>Azentrius</name>
+    </developer>
+  </component>
+  <component type="addon">
+    <id>de.azentrius.image_updates</id>
+    <pkgname>cockpit-image-updates</pkgname>
+    <name>Image updates</name>
+    <name xml:lang="de">Image-Updates</name>
+    <summary>Configured, running and newest version of every Docker container</summary>
+    <summary xml:lang="de">Konfigurierte, laufende und neueste Version jedes Docker-Containers</summary>
+    <description>
+      <p>
+        For every running Docker container the page shows what the compose file asks for, which
+        version actually runs and which version is the newest. Updates run right from Cockpit,
+        with a database dump first, a rollback copy of the old image and a rollback at the push
+        of a button. Diun and a version radar find new versions.
+      </p>
+      <p xml:lang="de">
+        Die Seite zeigt für jeden laufenden Docker-Container, was die Compose-Datei vorgibt, welche
+        Version wirklich läuft und welche die neueste ist. Updates laufen direkt aus Cockpit, mit
+        Datenbank-Dump vorab, Rollback-Kopie des alten Images und Rollback auf Knopfdruck. Diun
+        und ein Versionsradar finden neue Versionen.
+      </p>
+    </description>
+    <extends>org.cockpit_project.cockpit</extends>
+    <launchable type="cockpit-manifest">image-updates</launchable>
+    <url type="homepage">https://github.com/Azentrius/cockpit-image-update-monitor</url>
+    <url type="bugtracker">https://github.com/Azentrius/cockpit-image-update-monitor/issues</url>
+    <project_license>Apache-2.0</project_license>
+    <developer id="de.azentrius">
+      <name>Azentrius</name>
+    </developer>
+  </component>
+</components>

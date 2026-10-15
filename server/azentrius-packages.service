@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=packages.azentrius.de: take new releases of the Azentrius add-ons
+Documentation=https://github.com/Azentrius/packages
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=azentrius-packages
+Group=azentrius-packages
+ExecStart=/usr/local/bin/azentrius-packages sync
+Environment=GNUPGHOME=/var/lib/azentrius-packages/gnupg
+TimeoutStartSec=30min
+
+# Hardening: it only talks to GitHub and writes the repository and its own state.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/azentrius-packages /var/www/packages.azentrius.de
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes

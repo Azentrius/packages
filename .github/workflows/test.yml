@@ -1,0 +1,67 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Check tools (pinned in test/requirements.txt)
+        run: pip install -r test/requirements.txt
+      - name: Lint (shellcheck, ruff)
+        run: make lint
+      - name: Catalog, version and changelog, server tool
+        run: make check
+      - name: Tools for packages and repositories
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends rpm createrepo-c > /dev/null
+      - name: azentrius-repository (.deb, .rpm), built twice to the same bytes
+        run: |
+          make packages
+          (cd dist && sha256sum *.deb *.rpm) > first.sha256
+          rm -rf dist && make packages > /dev/null
+          (cd dist && sha256sum -c ../first.sha256)
+      # The server tool builds a real APT and RPM repository from the packages, signed with a
+      # throwaway key; Debian and Fedora then install azentrius-repository from it.
+      - name: Repository end to end (signed APT and RPM repository, installs on Debian and Fedora)
+        run: |
+          export GNUPGHOME="$RUNNER_TEMP/gnupg" AZPKG_ROOT="$RUNNER_TEMP/repo" AZPKG_STATE="$RUNNER_TEMP/state"
+          mkdir -m 700 "$GNUPGHOME"
+          gpg --batch --passphrase '' --quick-gen-key "Test <test@example.invalid>" rsa3072 sign never
+          AZPKG_KEY=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+          export AZPKG_KEY
+          python3 server/azentrius-packages.py add dist/*.deb dist/*.rpm
+          gpg --armor --export "$AZPKG_KEY" > "$AZPKG_ROOT/test.asc"
+          ls -la "$AZPKG_ROOT" "$AZPKG_ROOT/apt/dists/stable"
+          docker run --rm -v "$AZPKG_ROOT:/repo:ro" debian:13 sh -ec '
+            printf "Types: deb\nURIs: file:/repo/apt\nSuites: stable\nComponents: main\nSigned-By: /repo/test.asc\n" \
+              > /etc/apt/sources.list.d/test.sources
+            apt-get update -qq
+            apt-get install -y -qq azentrius-repository > /dev/null
+            test -f /usr/share/swcatalog/xml/azentrius.xml
+            test -f /usr/share/keyrings/azentrius.asc
+            grep -q "URIs: https://packages.azentrius.de/apt" /etc/apt/sources.list.d/azentrius.sources
+            apt-get remove -y -qq azentrius-repository > /dev/null
+            test ! -e /etc/apt/sources.list.d/azentrius.sources'
+          docker run --rm -v "$AZPKG_ROOT:/repo:ro" fedora:43 sh -ec '
+            rpm --import /repo/test.asc
+            printf "[test]\nname=test\nbaseurl=file:///repo/rpm\ngpgcheck=1\n" > /etc/yum.repos.d/test.repo
+            dnf install -y -q azentrius-repository
+            rpm -K /repo/rpm/azentrius-repository-*.rpm | grep -q "digests signatures OK"
+            test -f /usr/share/swcatalog/xml/azentrius.xml
+            grep -q "baseurl=https://packages.azentrius.de/rpm" /etc/yum.repos.d/azentrius.repo
+            dnf remove -y -q azentrius-repository
+            test ! -e /etc/yum.repos.d/azentrius.repo'

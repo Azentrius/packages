@@ -1,0 +1,5 @@
+# shellcheck shell=sh
+# Before azentrius-repository is removed (as root): take the repository out of apt and dnf.
+# Installed add-ons stay; they just get no more updates from here.
+# SPDX-License-Identifier: Apache-2.0
+rm -f /etc/apt/sources.list.d/azentrius.sources /etc/yum.repos.d/azentrius.repo
