@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+Image Update Monitor has a new package name.
+
+- **Catalog:** the add-on is listed as Image Update Monitor, the same in every language, with the
+  package `cockpit-image-update-monitor`, which replaces `cockpit-image-updates`. README and the web page
+  say the same.
+- `tools/build-packages.sh` is the new shared version, which can name packages a package replaces
+  (`CONFLICTS`); `azentrius-repository` sets none.
+
 ## 1.0.0 – 2026-10-16
 
 The package repository of the Azentrius Cockpit add-ons, packages.azentrius.de.

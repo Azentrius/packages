@@ -7,7 +7,7 @@ The package repository of the Azentrius add-ons for [Cockpit](https://cockpit-pr
 | Add-on | Package | Source |
 |---|---|---|
 | Cron Jobs | `cockpit-cronjobs` | [Azentrius/cockpit-cronjobs](https://github.com/Azentrius/cockpit-cronjobs) |
-| Image updates | `cockpit-image-updates` | [Azentrius/cockpit-image-update-monitor](https://github.com/Azentrius/cockpit-image-update-monitor) |
+| Image Update Monitor | `cockpit-image-update-monitor` | [Azentrius/cockpit-image-update-monitor](https://github.com/Azentrius/cockpit-image-update-monitor) |
 
 ## Set up
 
