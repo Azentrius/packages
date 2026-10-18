@@ -101,3 +101,5 @@ workflow on `main`.
 ## License
 
 Apache-2.0, see [LICENSE](LICENSE). The catalog is metadata under CC0-1.0, see [NOTICE](NOTICE).
+
+Made by [Azentrius](https://azentrius.de).
