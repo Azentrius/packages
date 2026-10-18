@@ -30,9 +30,11 @@
 sudo apt install ./azentrius-repository.deb
 sudo apt update</code></pre>
 
-  <h2>Fedora, RHEL and openSUSE</h2>
+  <h2>Fedora and RHEL</h2>
 <pre><code>sudo rpm --import https://packages.azentrius.de/azentrius.asc
 sudo dnf install https://packages.azentrius.de/azentrius-repository.rpm</code></pre>
+  <p>RHEL and its derivatives use the same commands, but only Fedora is tested. openSUSE is not served:
+    there, install the <code>.rpm</code> from the add-on's GitHub release.</p>
 
   <h2>Add-ons</h2>
   <ul>
@@ -51,6 +53,9 @@ sudo dnf install https://packages.azentrius.de/azentrius-repository.rpm</code></
     Befehlen oben ein; danach zeigt Cockpit die Erweiterungen unter <strong>Anwendungen</strong> zur Installation
     an und hält sie mit den normalen Systemupdates aktuell. Jedes Paket hier hat der Release-Workflow seines
     eigenen GitHub-Repositorys gebaut; dieser Server prüft das, bevor er es aufnimmt.</p>
+  <p lang="de">RHEL und davon abgeleitete Systeme verwenden dieselben Befehle wie Fedora; getestet ist die
+    Einrichtung nur unter Fedora. Für openSUSE bietet dieses Repository keine Einrichtung: Installieren Sie dort das
+    <code>.rpm</code> aus dem GitHub-Release der jeweiligen Erweiterung.</p>
 </main>
 </body>
 </html>
