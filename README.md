@@ -19,12 +19,16 @@ sudo apt install ./azentrius-repository.deb
 sudo apt update
 ```
 
-**Fedora, RHEL and openSUSE**
+**Fedora and RHEL**
 
 ```bash
 sudo rpm --import https://packages.azentrius.de/azentrius.asc
 sudo dnf install https://packages.azentrius.de/azentrius-repository.rpm
 ```
+
+RHEL and its derivatives use the same dnf set-up, but only Fedora is tested. openSUSE is not served
+(`azentrius-repository` sets up only apt and dnf): there, install the `.rpm` from the add-on's
+GitHub release after checking it with the release's `SHA256SUMS` and `gh attestation verify`.
 
 Then open **Applications** in Cockpit (with administrative access), or install on the console, e.g.
 `sudo apt install cockpit-cronjobs`. Removing `azentrius-repository` takes the repository out of
