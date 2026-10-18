@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 [Unit]
-Description=packages.azentrius.de: look for new releases every hour
+Description=packages.azentrius.com: look for new releases every hour
 
 [Timer]
 OnBootSec=10min

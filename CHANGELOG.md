@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0 – 2026-10-18
+
+The repository has a new address: **https://packages.azentrius.com**.
+
+- **`azentrius-repository`** points apt and dnf at `https://packages.azentrius.com/apt` and
+  `https://packages.azentrius.com/rpm`. Servers that installed an earlier version move over with
+  this update; until then packages.azentrius.de keeps serving the same files, without a redirect.
+- The signing key stays the same (fingerprint `D264 AD8E ABB3 6515 FCD4 FA58 6076 85C4 2A3F C9E7`),
+  including its user ID `packages@azentrius.de`.
+- Maintainer address: support@azentrius.com.
+- **Server:** the nginx site answers under both names; paths and the certificate keep the first
+  name, so `server/setup.sh` updates an existing set-up in place. README, SECURITY, NOTICE and the
+  web page name the new address.
+
 ## 1.1.0 – 2026-10-16
 
 Image Update Monitor has a new package name.

@@ -1,7 +1,7 @@
 # Makes a release on request: Actions › release › Run workflow (on main).
 # Checks the version, runs the checks, builds azentrius-repository (.deb, .rpm) and creates the
 # tag vVERSION with a GitHub release (packages, SHA256SUMS, signed build provenance, notes from
-# CHANGELOG.md). packages.azentrius.de takes the packages from there within an hour.
+# CHANGELOG.md). packages.azentrius.com takes the packages from there within an hour.
 name: release
 
 on:
@@ -81,8 +81,8 @@ jobs:
             echo
             echo "### Set up"
             echo
-            echo "See https://packages.azentrius.de/ or the README. The packages here are the same that"
-            echo "packages.azentrius.de serves (the RPM there additionally carries the repository's signature)."
+            echo "See https://packages.azentrius.com/ or the README. The packages here are the same that"
+            echo "packages.azentrius.com serves (the RPM there additionally carries the repository's signature)."
           } >> notes.md
 
       - name: Create the release

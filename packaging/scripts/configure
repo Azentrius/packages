@@ -5,7 +5,7 @@
 if [ -d /etc/apt/sources.list.d ]; then
     cat > /etc/apt/sources.list.d/azentrius.sources << 'EOF'
 Types: deb
-URIs: https://packages.azentrius.de/apt
+URIs: https://packages.azentrius.com/apt
 Suites: stable
 Components: main
 Signed-By: /usr/share/keyrings/azentrius.asc
@@ -15,7 +15,7 @@ if [ -d /etc/yum.repos.d ]; then
     cat > /etc/yum.repos.d/azentrius.repo << 'EOF'
 [azentrius]
 name=Azentrius Cockpit add-ons
-baseurl=https://packages.azentrius.de/rpm
+baseurl=https://packages.azentrius.com/rpm
 enabled=1
 gpgcheck=1
 gpgkey=file:///usr/share/keyrings/azentrius.asc
