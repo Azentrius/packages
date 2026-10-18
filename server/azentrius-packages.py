@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Keeps packages.azentrius.de: the APT and RPM repository of the Azentrius Cockpit add-ons.
+"""Keeps packages.azentrius.com: the APT and RPM repository of the Azentrius Cockpit add-ons.
 
     azentrius-packages sync          take new releases from GitHub, verify them, add their
                                      packages and rebuild the repositories

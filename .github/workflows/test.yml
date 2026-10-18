@@ -53,7 +53,7 @@ jobs:
             apt-get install -y -qq azentrius-repository > /dev/null
             test -f /usr/share/swcatalog/xml/azentrius.xml
             test -f /usr/share/keyrings/azentrius.asc
-            grep -q "URIs: https://packages.azentrius.de/apt" /etc/apt/sources.list.d/azentrius.sources
+            grep -q "URIs: https://packages.azentrius.com/apt" /etc/apt/sources.list.d/azentrius.sources
             apt-get remove -y -qq azentrius-repository > /dev/null
             test ! -e /etc/apt/sources.list.d/azentrius.sources'
           docker run --rm -v "$AZPKG_ROOT:/repo:ro" fedora:43 sh -ec '
@@ -62,6 +62,6 @@ jobs:
             dnf install -y -q azentrius-repository
             rpm -K /repo/rpm/azentrius-repository-*.rpm | grep -q "digests signatures OK"
             test -f /usr/share/swcatalog/xml/azentrius.xml
-            grep -q "baseurl=https://packages.azentrius.de/rpm" /etc/yum.repos.d/azentrius.repo
+            grep -q "baseurl=https://packages.azentrius.com/rpm" /etc/yum.repos.d/azentrius.repo
             dnf remove -y -q azentrius-repository
             test ! -e /etc/yum.repos.d/azentrius.repo'

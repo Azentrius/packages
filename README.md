@@ -1,7 +1,7 @@
 # Azentrius packages
 
 The package repository of the Azentrius add-ons for [Cockpit](https://cockpit-project.org):
-**https://packages.azentrius.de**. Set it up once; Cockpit then lists the add-ons under
+**https://packages.azentrius.com**. Set it up once; Cockpit then lists the add-ons under
 **Applications**, ready to install with a click, and the system's own updates keep them current.
 
 | Add-on | Package | Source |
@@ -14,7 +14,7 @@ The package repository of the Azentrius add-ons for [Cockpit](https://cockpit-pr
 **Debian and Ubuntu**
 
 ```bash
-curl -fsSLO https://packages.azentrius.de/azentrius-repository.deb
+curl -fsSLO https://packages.azentrius.com/azentrius-repository.deb
 sudo apt install ./azentrius-repository.deb
 sudo apt update
 ```
@@ -22,8 +22,8 @@ sudo apt update
 **Fedora and RHEL**
 
 ```bash
-sudo rpm --import https://packages.azentrius.de/azentrius.asc
-sudo dnf install https://packages.azentrius.de/azentrius-repository.rpm
+sudo rpm --import https://packages.azentrius.com/azentrius.asc
+sudo dnf install https://packages.azentrius.com/azentrius-repository.rpm
 ```
 
 RHEL and its derivatives use the same dnf set-up, but only Fedora is tested. openSUSE is not served
@@ -57,7 +57,7 @@ and never leaves it; GitHub has no access to the server, the server only reads p
 
 ## Server
 
-`server/` holds everything for packages.azentrius.de (public-host): the tool
+`server/` holds everything for packages.azentrius.com (public-host): the tool
 (`azentrius-packages.py`, Python 3, standard library only), its hardened systemd service and hourly
 timer, the nginx site and the web page. `sudo sh server/setup.sh` sets it all up on Debian or Ubuntu
 with nginx and certbot, and brings it up to date when run again:
@@ -69,6 +69,10 @@ with nginx and certbot, and brings it up to date when run again:
 - the web root `/var/www/packages.azentrius.de` (`apt/`, `rpm/`, `azentrius.asc`, the stable names
   `azentrius-repository.deb` and `.rpm`),
 - nginx with a Let's Encrypt certificate, and the timer `azentrius-packages.timer`.
+
+The repository also answers as packages.azentrius.de, its first name, with the same files and no
+redirect, so servers set up before `azentrius-repository` 1.2.0 keep working until their next
+update moves them. Paths and the certificate on the server keep that name.
 
 Operation:
 
@@ -102,4 +106,4 @@ workflow on `main`.
 
 Apache-2.0, see [LICENSE](LICENSE). The catalog is metadata under CC0-1.0, see [NOTICE](NOTICE).
 
-Made by [Azentrius](https://azentrius.de).
+Made by [Azentrius](https://azentrius.com).

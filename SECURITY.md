@@ -25,7 +25,7 @@ security fixes.
 
 ## Especially relevant
 
-packages.azentrius.de delivers software that runs as root on servers.
+packages.azentrius.com delivers software that runs as root on servers.
 Reports are particularly welcome for:
 
 - ways to get a package into the repository that was not built by the release

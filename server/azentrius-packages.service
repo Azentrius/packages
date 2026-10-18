@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 [Unit]
-Description=packages.azentrius.de: take new releases of the Azentrius add-ons
+Description=packages.azentrius.com: take new releases of the Azentrius add-ons
 Documentation=https://github.com/Azentrius/packages
 After=network-online.target
 Wants=network-online.target

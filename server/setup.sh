@@ -1,5 +1,5 @@
 #!/bin/sh
-# Sets up or updates packages.azentrius.de on a Debian or Ubuntu server with nginx and certbot.
+# Sets up or updates packages.azentrius.com on a Debian or Ubuntu server with nginx and certbot.
 #
 #   sudo sh server/setup.sh        (from a checkout or the source archive of this repository)
 #
@@ -14,9 +14,12 @@ cd "$(dirname "$0")/.."
 
 user=azentrius-packages
 home=/var/lib/azentrius-packages
-web=/var/www/packages.azentrius.de
-site=/etc/nginx/sites-available/packages.azentrius.de
-domain=packages.azentrius.de
+# Paths and the certificate keep the first name, packages.azentrius.de, so that an update finds the
+# existing set-up. The site answers under both names (see server/nginx.conf).
+name=packages.azentrius.de
+domain=packages.azentrius.com
+web=/var/www/$name
+site=/etc/nginx/sites-available/$name
 
 [ "$(id -u)" = 0 ] || { echo "Run as root." >&2; exit 77; }
 
@@ -55,17 +58,17 @@ install -m 644 server/azentrius-packages.service server/azentrius-packages.timer
 install -m 644 -o "$user" -g "$user" server/index.html repository/azentrius.asc "$web/"
 
 echo "== nginx and certificate"
-if [ ! -f "/etc/letsencrypt/live/$domain/fullchain.pem" ]; then
+if [ ! -f "/etc/letsencrypt/live/$name/fullchain.pem" ]; then
     # First the challenge over plain HTTP, then the full site.
-    printf 'server {\n    listen 80;\n    listen [::]:80;\n    server_name %s;\n    root %s;\n}\n' \
-        "$domain" "$web" > "$site"
-    ln -sf "$site" "/etc/nginx/sites-enabled/$domain"
+    printf 'server {\n    listen 80;\n    listen [::]:80;\n    server_name %s %s;\n    root %s;\n}\n' \
+        "$domain" "$name" "$web" > "$site"
+    ln -sf "$site" "/etc/nginx/sites-enabled/$name"
     nginx -t -q && systemctl reload nginx
-    certbot certonly --webroot -w "$web" -d "$domain" --non-interactive --agree-tos \
-        --register-unsafely-without-email --keep-until-expiring
+    certbot certonly --webroot -w "$web" --cert-name "$name" -d "$domain" -d "$name" \
+        --non-interactive --agree-tos --register-unsafely-without-email --keep-until-expiring
 fi
 install -m 644 server/nginx.conf "$site"
-ln -sf "$site" "/etc/nginx/sites-enabled/$domain"
+ln -sf "$site" "/etc/nginx/sites-enabled/$name"
 nginx -t -q && systemctl reload nginx
 
 echo "== timer and first run"
