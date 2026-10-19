@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0 – 2026-10-20
+
+The repository serves Update Gaps.
+
+- **Server:** the sync takes the releases of
+  [Azentrius/cockpit-update-gaps](https://github.com/Azentrius/cockpit-update-gaps), with the same
+  checks as for every add-on (SHA256SUMS, the digest GitHub reports, the build provenance of its own
+  release workflow).
+- **Catalog:** Cockpit lists Update Gaps (`cockpit-update-gaps`) under Applications, in step with
+  the add-on's metainfo. Its releases carry only a `.deb` so far: on Fedora and RHEL the entry shows
+  up, but dnf finds no package to install. README and the web page say "Debian and Ubuntu only".
+
 ## 1.2.0 – 2026-10-18
 
 The repository has a new address: **https://packages.azentrius.com**.
