@@ -9,6 +9,7 @@ The package repository of the Azentrius add-ons for [Cockpit](https://cockpit-pr
 | Cron Jobs | `cockpit-cronjobs` | [Azentrius/cockpit-cronjobs](https://github.com/Azentrius/cockpit-cronjobs) |
 | Image Update Monitor | `cockpit-image-update-monitor` | [Azentrius/cockpit-image-update-monitor](https://github.com/Azentrius/cockpit-image-update-monitor) |
 | Update Gaps (Debian and Ubuntu only) | `cockpit-update-gaps` | [Azentrius/cockpit-update-gaps](https://github.com/Azentrius/cockpit-update-gaps) |
+| Status Board (for the host with the host switcher) | `cockpit-status-board` | [Azentrius/cockpit-status-board](https://github.com/Azentrius/cockpit-status-board) |
 
 ## Set up
 
