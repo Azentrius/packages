@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 – 2026-10-21
+
+The repository serves Status Board.
+
+- **Server:** the sync takes the releases of
+  [Azentrius/cockpit-status-board](https://github.com/Azentrius/cockpit-status-board), with the same
+  checks as for every add-on (SHA256SUMS, the digest GitHub reports, the build provenance of its own
+  release workflow).
+- **Catalog:** Cockpit lists Status Board (`cockpit-status-board`) under Applications, in step with
+  the add-on's metainfo. Its releases carry a `.deb` and an `.rpm`. It belongs on the Cockpit host
+  from which the others are reached; README and the web page say so.
+
 ## 1.3.0 – 2026-10-20
 
 The repository serves Update Gaps.
