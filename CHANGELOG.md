@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.5.0 – 2026-10-21
+
+The repository serves Security Monitor.
+
+- **Server:** the sync takes the releases of
+  [Azentrius/cockpit-security-monitor](https://github.com/Azentrius/cockpit-security-monitor), with
+  the same checks as for every add-on (SHA256SUMS, the digest GitHub reports, the build provenance
+  of its own release workflow).
+- **Catalog:** Cockpit lists Security Monitor (`cockpit-security-monitor`) under Applications, in
+  step with the add-on's metainfo. Its 0.1 releases carry only a `.deb`: on Fedora and RHEL the
+  entry shows up, but dnf finds no package to install. README and the web page say "Debian and
+  Ubuntu only".
+
 ## 1.4.0 – 2026-10-21
 
 The repository serves Status Board.
