@@ -106,15 +106,21 @@
         A Cockpit page with one row per host of the host switcher and one tile per Azentrius
         add-on, such as Cron Jobs, Image Update Monitor, Update Gaps and Security Monitor: its
         state, its most important figure and the age of its data. A click opens the add-on on its
-        host. The page only reads, never asks for administrative access and belongs on the Cockpit
-        host from which the others are reached.
+        host. A tile folds out every entry of its add-on in a table below its row, each entry
+        opening its own place in the add-on; a switch shows only what needs attention, and a tile
+        says when another host runs a newer version of its add-on. The page only reads, never asks
+        for administrative access and belongs on the Cockpit host from which the others are
+        reached.
       </p>
       <p xml:lang="de">
         Eine Cockpit-Seite mit einer Zeile je Host des Host-Umschalters und einer Kachel je
         Azentrius-Add-on, etwa Cron Jobs, Image Update Monitor, Update Gaps und Security Monitor:
         sein Zustand, seine wichtigste Kennzahl und das Alter seiner Daten. Ein Klick öffnet das
-        Add-on auf seinem Host. Die Seite liest nur, fragt nie nach Administratorzugriff und gehört
-        auf den Cockpit-Host, von dem aus die anderen erreicht werden.
+        Add-on auf seinem Host. Eine Kachel klappt alle Einträge ihres Add-ons in einer Tabelle
+        unter ihrer Zeile auf, und jeder Eintrag öffnet seine eigene Stelle im Add-on; ein Schalter
+        zeigt nur Auffälliges, und eine Kachel sagt, wenn auf einem anderen Host eine neuere Version
+        ihres Add-ons läuft. Die Seite liest nur, fragt nie nach Administratorzugriff und gehört auf
+        den Cockpit-Host, von dem aus die anderen erreicht werden.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
