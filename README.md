@@ -11,6 +11,7 @@ The package repository of the Azentrius add-ons for [Cockpit](https://cockpit-pr
 | Update Gaps (Debian and Ubuntu only) | `cockpit-update-gaps` | [Azentrius/cockpit-update-gaps](https://github.com/Azentrius/cockpit-update-gaps) |
 | Status Board (for the host with the host switcher) | `cockpit-status-board` | [Azentrius/cockpit-status-board](https://github.com/Azentrius/cockpit-status-board) |
 | Security Monitor (Debian and Ubuntu only) | `cockpit-security-monitor` | [Azentrius/cockpit-security-monitor](https://github.com/Azentrius/cockpit-security-monitor) |
+| Host Settings (on each server that should send messages) | `cockpit-host-settings` | [Azentrius/cockpit-host-settings](https://github.com/Azentrius/cockpit-host-settings) |
 
 ## Set up
 

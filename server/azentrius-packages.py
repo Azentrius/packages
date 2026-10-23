@@ -37,6 +37,7 @@ REPOS = [
     "Azentrius/cockpit-update-gaps",
     "Azentrius/cockpit-status-board",
     "Azentrius/cockpit-security-monitor",
+    "Azentrius/cockpit-host-settings",
 ]
 ROOT = pathlib.Path(os.environ.get("AZPKG_ROOT", "/var/www/packages.azentrius.de"))
 STATE = pathlib.Path(os.environ.get("AZPKG_STATE", "/var/lib/azentrius-packages"))
