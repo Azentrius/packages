@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.6.0 – 2026-10-23
+
+The repository serves Host Settings.
+
+- **Server:** the sync takes the releases of
+  [Azentrius/cockpit-host-settings](https://github.com/Azentrius/cockpit-host-settings), with the
+  same checks as for every add-on (SHA256SUMS, the digest GitHub reports, the build provenance of
+  its own release workflow). Its releases carry a `.deb` and a `.rpm`.
+- **Catalog:** Cockpit lists Host Settings (`cockpit-host-settings`) under Applications, in step
+  with the add-on's metainfo. It belongs on each server that should send messages.
+
 ## 1.5.1 – 2026-10-23
 
 The catalog describes what Update Gaps and Status Board do now, and the README says more exactly
