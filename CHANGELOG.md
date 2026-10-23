@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.5.1 – 2026-10-23
+
+The catalog describes what Update Gaps and Status Board do now, and the README says more exactly
+how packages get into the repository.
+
+- **Catalog:** Cockpit's Applications page describes Update Gaps with its newer checks (packages
+  dpkg left half done, room in /boot for the next kernel, CPU vulnerabilities, firmware updates,
+  snaps, expired signing keys of the sources, failed runs of the automatic updates), since when each
+  finding has been there, phased updates, acknowledged findings and the optional network data; and
+  Status Board with the entries of a tile, the switch for what needs attention and the hint that
+  another host runs a newer version of an add-on. In English and German.
+- **README:** Update Gaps and Security Monitor release only a `.deb`; the digest GitHub reports is
+  compared when GitHub reports one; `azentrius-packages add` puts packages in without the checks
+  and is a way out for root on the server only; the signing key has no passphrase and does not
+  expire, only file permissions protect it; a new add-on also needs `server/setup.sh` run again on
+  the server, since only that installs the tool with the new entry in `REPOS`.
+
 ## 1.5.0 – 2026-10-21
 
 The repository serves Security Monitor.

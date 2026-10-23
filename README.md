@@ -48,15 +48,25 @@ apt and dnf again; installed add-ons stay.
 
 ## How packages get here
 
-Every add-on repository builds its `.deb` and `.rpm` in its release workflow on GitHub and signs a
-build provenance for them. Once an hour, `azentrius-packages sync` on the server takes new releases
-and adds a package only if
+Every add-on repository builds its packages in its release workflow on GitHub and signs a build
+provenance for them: a `.deb` and an `.rpm`, for Update Gaps and Security Monitor only a `.deb` so
+far. Once an hour, `azentrius-packages sync` on the server takes new releases and adds a package
+only if
 
-1. its SHA-256 matches the release's `SHA256SUMS` and the digest GitHub reports for the asset, and
+1. its SHA-256 matches the release's `SHA256SUMS` and, when GitHub reports one, the digest of the
+   asset, and
 2. `gh attestation verify` confirms that the release workflow of its own repository built it.
 
 It then signs the RPM and the APT metadata. The signing key belongs to a service user on the server
 and never leaves it; GitHub has no access to the server, the server only reads public releases.
+The key has no passphrase and does not expire (`server/setup.sh` creates it so, and the hourly sync
+signs without anyone present): only file permissions protect it. Its folder
+`/var/lib/azentrius-packages/gnupg` has mode 700 and belongs to the service user, so whoever is root
+on the server or runs as that user can sign with it.
+
+`azentrius-packages add FILE…` puts local packages into the repository without any of these checks
+and signs them as the sync does. It is a way out for tests and emergencies, for root on the server
+only (it runs as the service user, like `publish` below), not part of the normal way in.
 
 ## Server
 
@@ -87,7 +97,10 @@ sudo -u azentrius-packages GNUPGHOME=/var/lib/azentrius-packages/gnupg \
 ```
 
 A new add-on needs an entry in `REPOS` (in `server/azentrius-packages.py`) and in the catalog
-`repository/azentrius.xml`, then a release of this repository.
+`repository/azentrius.xml`, then a release of this repository, which brings the catalog to the
+servers that use it, and `sudo sh server/setup.sh` run again on the server from a checkout with the
+new entry: the sync runs the copy of the tool that `setup.sh` installed as
+`/usr/local/bin/azentrius-packages`, so until then it takes no releases of the new add-on.
 
 ## Development
 
