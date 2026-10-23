@@ -30,7 +30,8 @@ sudo rpm --import https://packages.azentrius.com/azentrius.asc
 sudo dnf install https://packages.azentrius.com/azentrius-repository.rpm
 ```
 
-RHEL and its derivatives use the same dnf set-up, but only Fedora is tested. openSUSE is not served
+RHEL and its derivatives use the same dnf set-up; it is tested on Fedora and on the rebuilds Rocky
+Linux and AlmaLinux 9 and 10, not on RHEL itself. openSUSE is not served
 (`azentrius-repository` sets up only apt and dnf): there, install the `.rpm` from the add-on's
 GitHub release after checking it with the release's `SHA256SUMS` and `gh attestation verify`.
 
@@ -113,7 +114,8 @@ make packages       # dist/azentrius-repository_X.Y.Z-1_all.deb and -X.Y.Z-1.noa
 ```
 
 The `test` workflow also builds a signed APT and RPM repository with a throwaway key through the
-server tool and installs `azentrius-repository` from it on Debian 13 and Fedora 43.
+server tool and installs `azentrius-repository` from it on Debian 13, Fedora 43, Rocky Linux 9 and
+10 and AlmaLinux 9 and 10; the RPM systems import the repository's real key first.
 `tools/build-packages.sh` is the same file in every Azentrius add-on.
 
 Releases: raise `VERSION`, add a section to `CHANGELOG.md`, merge, then Actions › release › Run

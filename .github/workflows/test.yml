@@ -35,8 +35,10 @@ jobs:
           rm -rf dist && make packages > /dev/null
           (cd dist && sha256sum -c ../first.sha256)
       # The server tool builds a real APT and RPM repository from the packages, signed with a
-      # throwaway key; Debian and Fedora then install azentrius-repository from it.
-      - name: Repository end to end (signed APT and RPM repository, installs on Debian and Fedora)
+      # throwaway key; Debian, Fedora and the RHEL rebuilds Rocky Linux and AlmaLinux (9 and 10)
+      # then install azentrius-repository from it. Each RPM system first imports the repository's
+      # real key, as the README's set-up does, so a key its rpm refuses shows here.
+      - name: Repository end to end (signed APT and RPM repository, installs on Debian, Fedora, Rocky and Alma)
         run: |
           export GNUPGHOME="$RUNNER_TEMP/gnupg" AZPKG_ROOT="$RUNNER_TEMP/repo" AZPKG_STATE="$RUNNER_TEMP/state"
           mkdir -m 700 "$GNUPGHOME"
@@ -56,12 +58,19 @@ jobs:
             grep -q "URIs: https://packages.azentrius.com/apt" /etc/apt/sources.list.d/azentrius.sources
             apt-get remove -y -qq azentrius-repository > /dev/null
             test ! -e /etc/apt/sources.list.d/azentrius.sources'
-          docker run --rm -v "$AZPKG_ROOT:/repo:ro" fedora:43 sh -ec '
-            rpm --import /repo/test.asc
-            printf "[test]\nname=test\nbaseurl=file:///repo/rpm\ngpgcheck=1\n" > /etc/yum.repos.d/test.repo
-            dnf install -y -q azentrius-repository
-            rpm -K /repo/rpm/azentrius-repository-*.rpm | grep -q "digests signatures OK"
-            test -f /usr/share/swcatalog/xml/azentrius.xml
-            grep -q "baseurl=https://packages.azentrius.com/rpm" /etc/yum.repos.d/azentrius.repo
-            dnf remove -y -q azentrius-repository
-            test ! -e /etc/yum.repos.d/azentrius.repo'
+          for image in fedora:43 rockylinux/rockylinux:9 rockylinux/rockylinux:10 almalinux:9 almalinux:10; do
+            echo "::group::$image"
+            docker run --rm -v "$AZPKG_ROOT:/repo:ro" -v "$PWD/repository/azentrius.asc:/azentrius.asc:ro" "$image" sh -ec '
+              . /etc/os-release
+              echo "$PRETTY_NAME, $(rpm --version)"
+              rpm --import /azentrius.asc
+              rpm --import /repo/test.asc
+              printf "[test]\nname=test\nbaseurl=file:///repo/rpm\ngpgcheck=1\n" > /etc/yum.repos.d/test.repo
+              dnf install -y -q azentrius-repository
+              rpm -K /repo/rpm/azentrius-repository-*.rpm | grep -q "digests signatures OK"
+              test -f /usr/share/swcatalog/xml/azentrius.xml
+              grep -q "baseurl=https://packages.azentrius.com/rpm" /etc/yum.repos.d/azentrius.repo
+              dnf remove -y -q azentrius-repository
+              test ! -e /etc/yum.repos.d/azentrius.repo'
+            echo "::endgroup::"
+          done
