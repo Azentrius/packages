@@ -118,7 +118,9 @@ server tool and installs `azentrius-repository` from it on Debian 13, Fedora 43,
 10 and AlmaLinux 9 and 10; the RPM systems import the repository's real key first.
 `tools/build-packages.sh` is the same file in every Azentrius add-on. `tools/apt-update.sh` runs
 `apt-get update` on the CI runner with time limits and three tries, so that a mirror that hangs
-costs minutes instead of the job; it is the same file as in Cron Jobs.
+costs minutes instead of the job; it is the same file as in Cron Jobs. `tools/dnf.sh`, also from
+there, runs dnf in the test containers with time limits and three tries, the repository data
+first, and lets dnf leave a mirror slower than 100 kB/s.
 
 Releases: raise `VERSION`, add a section to `CHANGELOG.md`, merge, then Actions › release › Run
 workflow on `main`.
