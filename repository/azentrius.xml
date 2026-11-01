@@ -120,21 +120,32 @@
       <p>
         A Cockpit page with one row per host of the host switcher and one tile per Azentrius
         add-on, such as Cron Jobs, Image Update Monitor, Update Gaps and Security Monitor: its
-        state, its most important figure and the age of its data. A click opens the add-on on its
-        host. A tile folds out every entry of its add-on in a table below its row, each entry
-        opening its own place in the add-on; a switch shows only what needs attention, and a tile
-        says when another host runs a newer version of its add-on. The page only reads, never asks
-        for administrative access and belongs on the Cockpit host from which the others are
-        reached.
+        state, its most important figure and the age of its data. Hosts that do not answer, locked
+        SSH keys, add-ons that are missing on a host and data that is out of date are shown too. A
+        click opens the add-on on its host. A tile folds out every entry of its add-on in a table
+        below its row, each entry opening its own place in the add-on; a switch shows only what
+        needs attention, and a tile says when another host runs a newer version of its add-on. A
+        tab "Needs attention" lists what to do on all hosts, each task with its reasons, its
+        evidence and a button into the add-on. Each host shows its roles from the target profile
+        that Host Settings sends, how many of the add-ons it is expected to have were checked, and
+        as planned scope the areas the suite does not cover yet. The page only reads: it runs each
+        add-on's status verb, never asks for administrative access and belongs on the Cockpit host
+        from which the others are reached.
       </p>
       <p xml:lang="de">
         Eine Cockpit-Seite mit einer Zeile je Host des Host-Umschalters und einer Kachel je
         Azentrius-Add-on, etwa Cron Jobs, Image Update Monitor, Update Gaps und Security Monitor:
-        sein Zustand, seine wichtigste Kennzahl und das Alter seiner Daten. Ein Klick öffnet das
-        Add-on auf seinem Host. Eine Kachel klappt alle Einträge ihres Add-ons in einer Tabelle
-        unter ihrer Zeile auf, und jeder Eintrag öffnet seine eigene Stelle im Add-on; ein Schalter
-        zeigt nur Auffälliges, und eine Kachel sagt, wenn auf einem anderen Host eine neuere Version
-        ihres Add-ons läuft. Die Seite liest nur, fragt nie nach Administratorzugriff und gehört auf
+        sein Zustand, seine wichtigste Kennzahl und das Alter seiner Daten. Auch Hosts, die nicht
+        antworten, gesperrte SSH-Schlüssel, Add-ons, die auf einem Host fehlen, und veraltete Daten
+        werden gezeigt. Ein Klick öffnet das Add-on auf seinem Host. Eine Kachel klappt alle
+        Einträge ihres Add-ons in einer Tabelle unter ihrer Zeile auf, und jeder Eintrag öffnet
+        seine eigene Stelle im Add-on; ein Schalter zeigt nur Auffälliges, und eine Kachel sagt,
+        wenn auf einem anderen Host eine neuere Version ihres Add-ons läuft. Ein Reiter
+        „Handlungsbedarf“ listet, was auf allen Hosts zu tun ist, jede Aufgabe mit ihren Gründen,
+        ihrem Nachweis und einem Knopf ins Add-on. Jeder Host zeigt seine Rollen aus dem
+        Sollprofil, das Host Settings meldet, wie viele der erwarteten Add-ons geprüft sind, und als
+        geplanten Umfang die Bereiche, die die Suite noch nicht abdeckt. Die Seite liest nur: Sie
+        ruft das Status-Verb jedes Add-ons auf, fragt nie nach Administratorzugriff und gehört auf
         den Cockpit-Host, von dem aus die anderen erreicht werden.
       </p>
     </description>
@@ -160,8 +171,12 @@
         reads UFW, Docker (which forwards published ports past UFW), nftables and iptables, and
         optionally the Hetzner Cloud Firewall with a read-only token. It also shows the SSH
         configuration and keys, the logins of the last 14 days, container settings that weaken
-        the boundary to the host, and CrowdSec if it is installed. It only reads; the one change
-        it makes is marking a finding as expected in its own file.
+        the boundary to the host, and CrowdSec and fail2ban if they are installed. For fail2ban
+        it shows what each jail watches, whom it bans and where a ban does not reach: Docker
+        forwards published ports past a ban at the host's input. A status for the Azentrius Status
+        Board and Cockpit's menu says where something needs a look, without addresses or user
+        names. It only reads; the one change it makes is marking a finding as expected in its own
+        file.
       </p>
       <p xml:lang="de">
         Die Seite zeigt je Port, ob er aus dem Internet, dem VPN, dem Privatnetz oder nur vom
@@ -169,9 +184,12 @@
         liest UFW, Docker (das veröffentlichte Ports an UFW vorbei weiterleitet), nftables und
         iptables und auf Wunsch die Hetzner Cloud Firewall mit einem nur lesenden Token. Dazu
         zeigt sie die SSH-Konfiguration und Schlüssel, die Anmeldungen der letzten 14 Tage,
-        Einstellungen von Containern, die die Grenze zum Host schwächen, und CrowdSec, wenn es
-        installiert ist. Sie liest nur; die einzige Änderung ist, einen Befund in ihrer eigenen
-        Datei als erwartet zu markieren.
+        Einstellungen von Containern, die die Grenze zum Host schwächen, und CrowdSec und
+        fail2ban, wenn sie installiert sind. Bei fail2ban zeigt sie, was jedes Jail beobachtet, wen
+        es sperrt und wo eine Sperre nicht greift: Docker leitet veröffentlichte Ports an einer
+        Sperre am Eingang des Hosts vorbei. Ein Status für das Azentrius Status Board und Cockpits
+        Menü meldet, wo etwas zu prüfen ist, ohne Adressen oder Benutzernamen. Sie liest nur; die
+        einzige Änderung ist, einen Befund in ihrer eigenen Datei als erwartet zu markieren.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
@@ -196,8 +214,9 @@
         when a finding turns to a warning or a danger, and when it is OK again. The messages hold
         only what the add-ons report and the server's name. The page sets up the channels, shows
         the commands the ntfy server needs for this server's user, topic and token, and checks that
-        the topic is closed to anyone without a login. The notifier runs as a user of its own,
-        never as root.
+        the topic is closed to anyone without a login. An external watchdog (Healthchecks or Uptime
+        Kuma) can get a signal after every run, so that a notifier that stops or fails is noticed.
+        The notifier runs as a user of its own, never as root.
       </p>
       <p xml:lang="de">
         Alle 5 Minuten liest der Notifier den Status der Azentrius-Add-ons auf dem Server über den
@@ -205,8 +224,10 @@
         Befund zur Warnung oder Gefahr wird und wenn er wieder in Ordnung ist. Die Nachrichten
         enthalten nur, was die Add-ons melden, und den Namen des Servers. Die Seite richtet die Kanäle
         ein, zeigt die Befehle, die der ntfy-Server für Benutzer, Thema und Token dieses Servers
-        braucht, und prüft, dass das Thema ohne Anmeldung geschlossen ist. Der Notifier läuft als
-        eigener Benutzer, nie als root.
+        braucht, und prüft, dass das Thema ohne Anmeldung geschlossen ist. Ein externer Wächter
+        (Healthchecks oder Uptime Kuma) kann nach jedem Lauf ein Signal bekommen, damit ein Notifier,
+        der ausfällt oder scheitert, bemerkt wird. Der Notifier läuft als eigener Benutzer, nie als
+        root.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
