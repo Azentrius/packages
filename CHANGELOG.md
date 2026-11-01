@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.6.1 – 2026-11-01
+
+The catalog describes what Status Board 0.3.0, Security Monitor 0.4.0 and Host Settings 0.2.0 do.
+
+- **Catalog:** Cockpit's Applications page describes Status Board with hosts that do not answer,
+  locked SSH keys, add-ons missing on a host and out-of-date data, the tab "Needs attention" with
+  its tasks, the roles from the target profile that Host Settings sends, the coverage per host and
+  the planned scope; Security Monitor with fail2ban (what each jail watches and bans, and where
+  Docker forwards published ports past a ban) and its status for Status Board and Cockpit's menu,
+  without addresses or user names; and Host Settings with the signal to an external watchdog
+  (Healthchecks or Uptime Kuma) after every run. In English and German.
+- **Tests:** the repository set-up is also tested on Rocky Linux and AlmaLinux 9 and 10, with the
+  repository's real key imported first; the README says so. The package is unchanged apart from
+  the catalog.
+
 ## 1.6.0 – 2026-10-23
 
 The repository serves Host Settings.
