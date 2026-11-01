@@ -60,13 +60,14 @@ jobs:
             test ! -e /etc/apt/sources.list.d/azentrius.sources'
           for image in fedora:43 rockylinux/rockylinux:9 rockylinux/rockylinux:10 almalinux:9 almalinux:10; do
             echo "::group::$image"
-            docker run --rm -v "$AZPKG_ROOT:/repo:ro" -v "$PWD/repository/azentrius.asc:/azentrius.asc:ro" "$image" sh -ec '
+            docker run --rm -v "$AZPKG_ROOT:/repo:ro" -v "$PWD/repository/azentrius.asc:/azentrius.asc:ro" \
+              -v "$PWD/tools/dnf.sh:/dnf.sh:ro" "$image" sh -ec '
               . /etc/os-release
               echo "$PRETTY_NAME, $(rpm --version)"
               rpm --import /azentrius.asc
               rpm --import /repo/test.asc
               printf "[test]\nname=test\nbaseurl=file:///repo/rpm\ngpgcheck=1\n" > /etc/yum.repos.d/test.repo
-              dnf install -y -q azentrius-repository
+              sh /dnf.sh install -y -q azentrius-repository
               rpm -K /repo/rpm/azentrius-repository-*.rpm | grep -q "digests signatures OK"
               test -f /usr/share/swcatalog/xml/azentrius.xml
               grep -q "baseurl=https://packages.azentrius.com/rpm" /etc/yum.repos.d/azentrius.repo
