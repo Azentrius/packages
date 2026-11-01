@@ -116,7 +116,9 @@ make packages       # dist/azentrius-repository_X.Y.Z-1_all.deb and -X.Y.Z-1.noa
 The `test` workflow also builds a signed APT and RPM repository with a throwaway key through the
 server tool and installs `azentrius-repository` from it on Debian 13, Fedora 43, Rocky Linux 9 and
 10 and AlmaLinux 9 and 10; the RPM systems import the repository's real key first.
-`tools/build-packages.sh` is the same file in every Azentrius add-on.
+`tools/build-packages.sh` is the same file in every Azentrius add-on. `tools/apt-update.sh` runs
+`apt-get update` on the CI runner with time limits and three tries, so that a mirror that hangs
+costs minutes instead of the job; it is the same file as in Cron Jobs.
 
 Releases: raise `VERSION`, add a section to `CHANGELOG.md`, merge, then Actions › release › Run
 workflow on `main`.

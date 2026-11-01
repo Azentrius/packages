@@ -26,7 +26,7 @@ jobs:
         run: make check
       - name: Tools for packages and repositories
         run: |
-          sudo apt-get update -qq
+          sudo sh tools/apt-update.sh
           sudo apt-get install -y -qq --no-install-recommends rpm createrepo-c > /dev/null
       - name: azentrius-repository (.deb, .rpm), built twice to the same bytes
         run: |
