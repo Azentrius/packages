@@ -12,16 +12,27 @@
     <summary xml:lang="de">Alle Cron-Jobs und systemd-Timer an einem Ort</summary>
     <description>
       <p>
-        A Cockpit page for cron. It shows everything that is scheduled on the server, with a
-        timeline of the next 24 hours, changes the root crontab safely and keeps backups of it,
-        records the result of every run, starts jobs on demand and turns cron jobs into systemd
-        timers and back.
+        Cockpit management of cron jobs and systemd timers, with crontab editing, optional run
+        recording, manual runs and conversion to timers. The page shows everything that is
+        scheduled on the server, with a timeline of the next 24 hours, changes the root crontab
+        and those of other users safely and keeps backups of them, records exit code, duration
+        and output of the runs of the jobs you choose, starts jobs on demand and turns cron jobs
+        into systemd timers and back. Failed and missed runs show at a glance, runs of jobs that
+        do not record come from cron's own log (with how they ended, where cron logs it, but
+        without their output), and a status for the Azentrius Status Board and Cockpit's menu
+        says when something failed or cron is not running.
       </p>
       <p xml:lang="de">
-        Eine Cockpit-Seite für cron. Sie zeigt alles, was auf dem Server geplant ist, mit einer
-        Zeitleiste der nächsten 24 Stunden, ändert die Root-Crontab sicher und sichert sie, hält
-        das Ergebnis jedes Laufs fest, startet Jobs auf Knopfdruck und macht aus Cron-Jobs
-        systemd-Timer und wieder zurück.
+        Cockpit-Verwaltung von Cron-Jobs und systemd-Timern, mit Bearbeitung der Crontabs,
+        optionaler Erfassung der Läufe, manuellen Läufen und Umwandlung in Timer. Die Seite
+        zeigt alles, was auf dem Server geplant ist, mit einer Zeitleiste der nächsten 24
+        Stunden, ändert die Crontab von root und die anderer Benutzer sicher und sichert sie,
+        erfasst Exitcode, Dauer und Ausgabe der Läufe der Jobs Ihrer Wahl, startet Jobs auf
+        Knopfdruck und macht aus Cron-Jobs systemd-Timer und wieder zurück. Fehlgeschlagene und
+        ausgefallene Läufe sind auf einen Blick zu sehen, Läufe von Jobs ohne Erfassung kommen
+        aus dem Log von cron (mit ihrem Ausgang, wo cron ihn loggt, aber ohne ihre Ausgabe), und
+        ein Status für das Azentrius Status Board und Cockpits Menü meldet, wenn etwas
+        fehlschlug oder cron nicht läuft.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
@@ -37,20 +48,31 @@
     <id>de.azentrius.image_updates</id>
     <pkgname>cockpit-image-update-monitor</pkgname>
     <name>Image Update Monitor</name>
-    <summary>Configured, running and newest version of every Docker container</summary>
-    <summary xml:lang="de">Konfigurierte, laufende und neueste Version jedes Docker-Containers</summary>
+    <summary>Configured, installed and newest version of every running Docker container</summary>
+    <summary xml:lang="de">Konfigurierte, installierte und neueste Version jedes laufenden Docker-Containers</summary>
     <description>
       <p>
         For every running Docker container the page shows what the compose file asks for, which
-        version actually runs and which version is the newest. Updates run right from Cockpit,
-        with a database dump first, a rollback copy of the old image and a rollback at the push
-        of a button. Diun and a version radar find new versions.
+        version actually runs and which version is the newest. Containers started with Docker
+        Compose can be updated right from Cockpit, with a database dump first, a rollback copy
+        of the old image and a rollback at the push of a button; other containers are shown, but
+        not changed. Diun and a version radar find new versions; the update dialog shows the
+        release notes in between. PostgreSQL and MariaDB majors run by dump and restore after a
+        trial run, and images built on the server are built again once a base image is newer.
+        The dumps and rollback copies serve the update and are no complete backup: the apps'
+        volumes and other files are not copied.
       </p>
       <p xml:lang="de">
-        Die Seite zeigt für jeden laufenden Docker-Container, was die Compose-Datei vorgibt, welche
-        Version wirklich läuft und welche die neueste ist. Updates laufen direkt aus Cockpit, mit
-        Datenbank-Dump vorab, Rollback-Kopie des alten Images und Rollback auf Knopfdruck. Diun
-        und ein Versionsradar finden neue Versionen.
+        Die Seite zeigt für jeden laufenden Docker-Container, was die Compose-Datei vorgibt,
+        welche Version wirklich läuft und welche die neueste ist. Mit Docker Compose gestartete
+        Container lassen sich direkt aus Cockpit aktualisieren, mit Datenbank-Dump vorab,
+        Rollback-Kopie des alten Images und Rollback auf Knopfdruck; andere Container werden
+        gezeigt, aber nicht geändert. Diun und ein Versionsradar finden neue Versionen; der
+        Update-Dialog zeigt die Release Notes dazwischen. PostgreSQL- und MariaDB-Majors laufen
+        nach einem Probelauf per Dump und Restore, und auf dem Server gebaute Images werden neu
+        gebaut, sobald ein Basis-Image neuer ist. Dumps und Rollback-Kopien dienen dem Update
+        und sind keine vollständige Datensicherung: Volumes und andere Dateien der Anwendungen
+        werden nicht kopiert.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
@@ -70,35 +92,41 @@
     <summary xml:lang="de">Die Updates, die einem Server fehlen, obwohl Software-Updates nichts meldet</summary>
     <description>
       <p>
-        The page shows where updates are missing although Cockpit's Software Updates lists none:
-        held packages, fixes that only come with Ubuntu Pro, pending restarts, packages dpkg left
-        half done, too little room in /boot for the next kernel, CPU vulnerabilities the kernel
-        reports, firmware updates (with fwupd), snaps that are not refreshed, missing or old package
-        lists, expired signing keys of the sources, packages without a source, sources the automatic
-        updates leave out and runs of them that failed, backports not installed, software outside
-        the package manager and the end of support. For every finding it says why Software Updates
-        does not show it, what you can do and since when it has been there. When Ubuntu rolls
-        updates out in phases and Software Updates fails on them, it says why and gives the commands
-        that get around it. A finding that is meant to be there can be acknowledged until a day: the
-        page keeps showing it, the status stops counting it. Otherwise it only reads. Once set up,
-        network data add security issues Ubuntu has not fixed yet, fixes released upstream and newer
-        versions elsewhere in Ubuntu, fetched once a day by an unprivileged service.
+        On Debian and Ubuntu servers with apt and dpkg, the page shows where updates are missing
+        although Cockpit's Software Updates lists none: held packages, fixes that only come with
+        Ubuntu Pro, pending restarts, packages dpkg left half done, too little room in /boot for
+        the next kernel, CPU vulnerabilities the kernel reports, firmware updates (with fwupd),
+        snaps that are not refreshed, missing or old package lists, expired signing keys of the
+        sources, packages without a source, sources the automatic updates leave out and runs of
+        them that failed, backports not installed, software outside the package manager and the
+        end of support. For every finding it says why Software Updates does not show it, what
+        you can do and since when it has been there. When Ubuntu rolls updates out in phases and
+        Software Updates fails on them, it says why and gives the commands that get around it. A
+        finding that is meant to be there can be acknowledged until a day: the page keeps
+        showing it, the status stops counting it. Otherwise it only reads. Once set up, network
+        data add security issues Ubuntu has not fixed yet, fixes released upstream and newer
+        versions elsewhere in Ubuntu for a fixed selection of packages, fetched once a day by an
+        unprivileged service. The page is no complete inventory of the security issues of the
+        system or its applications.
       </p>
       <p xml:lang="de">
-        Die Seite zeigt, wo Updates fehlen, obwohl Software-Updates in Cockpit nichts meldet:
-        gehaltene Pakete, Fixes nur mit Ubuntu Pro, ausstehende Neustarts, Pakete, die dpkg halb
-        fertig liegen ließ, zu wenig Platz in /boot für den nächsten Kernel, CPU-Schwachstellen laut
-        Kernel, Firmware-Updates (mit fwupd), Snaps, die nicht aktualisiert werden, fehlende oder
-        alte Paketlisten, abgelaufene Signaturschlüssel der Paketquellen, Pakete ohne Paketquelle,
-        Quellen außerhalb der automatischen Updates und Läufe davon, die scheiterten, nicht
-        installierte Backports, Software außerhalb des Paketmanagers und das Ende der Unterstützung.
-        Zu jedem Befund steht, warum Software-Updates ihn nicht zeigt, was Sie tun können und seit
-        wann er besteht. Verteilt Ubuntu Updates schrittweise und scheitert Software-Updates daran,
+        Auf Debian- und Ubuntu-Servern mit apt und dpkg zeigt die Seite, wo Updates fehlen,
+        obwohl Software-Updates in Cockpit nichts meldet: gehaltene Pakete, Fixes nur mit Ubuntu
+        Pro, ausstehende Neustarts, Pakete, die dpkg halb fertig liegen ließ, zu wenig Platz in
+        /boot für den nächsten Kernel, CPU-Schwachstellen laut Kernel, Firmware-Updates (mit
+        fwupd), Snaps, die nicht aktualisiert werden, fehlende oder alte Paketlisten,
+        abgelaufene Signaturschlüssel der Paketquellen, Pakete ohne Paketquelle, Quellen
+        außerhalb der automatischen Updates und Läufe davon, die scheiterten, nicht installierte
+        Backports, Software außerhalb des Paketmanagers und das Ende der Unterstützung. Zu jedem
+        Befund steht, warum Software-Updates ihn nicht zeigt, was Sie tun können und seit wann
+        er besteht. Verteilt Ubuntu Updates schrittweise und scheitert Software-Updates daran,
         erklärt sie, warum, und nennt die Befehle, die daran vorbeiführen. Ein Befund, der so
-        gewollt ist, lässt sich bis zu einem Tag quittieren: Die Seite zeigt ihn weiter, der Status
-        zählt ihn nicht mehr. Sonst liest sie nur. Einmal eingerichtet, kommen Netzdaten hinzu:
-        Sicherheitslücken, die Ubuntu noch nicht behoben hat, Fixes bei Upstream und neuere
-        Versionen anderswo in Ubuntu, einmal am Tag von einem unprivilegierten Dienst geholt.
+        gewollt ist, lässt sich bis zu einem Tag quittieren: Die Seite zeigt ihn weiter, der
+        Status zählt ihn nicht mehr. Sonst liest sie nur. Einmal eingerichtet, kommen für eine
+        feste Auswahl von Paketen Netzdaten hinzu: Sicherheitslücken, die Ubuntu noch nicht
+        behoben hat, Fixes bei Upstream und neuere Versionen anderswo in Ubuntu, einmal am Tag
+        von einem unprivilegierten Dienst geholt. Ein vollständiges Verzeichnis der
+        Sicherheitslücken des Systems oder seiner Anwendungen ist die Seite nicht.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
@@ -114,39 +142,46 @@
     <id>de.azentrius.status_board</id>
     <pkgname>cockpit-status-board</pkgname>
     <name>Status Board</name>
-    <summary>The state of the Azentrius add-ons on every host at a glance</summary>
-    <summary xml:lang="de">Der Zustand der Azentrius-Add-ons auf allen Hosts auf einen Blick</summary>
+    <summary>What needs attention across the Azentrius add-ons on every host</summary>
+    <summary xml:lang="de">Handlungsbedarf aus den Azentrius-Add-ons auf allen Hosts</summary>
     <description>
       <p>
-        A Cockpit page with one row per host of the host switcher and one tile per Azentrius
-        add-on, such as Cron Jobs, Image Update Monitor, Update Gaps and Security Monitor: its
-        state, its most important figure and the age of its data. Hosts that do not answer, locked
-        SSH keys, add-ons that are missing on a host and data that is out of date are shown too. A
-        click opens the add-on on its host. A tile folds out every entry of its add-on in a table
-        below its row, each entry opening its own place in the add-on; a switch shows only what
-        needs attention, and a tile says when another host runs a newer version of its add-on. A
-        tab "Needs attention" lists what to do on all hosts, each task with its reasons, its
-        evidence and a button into the add-on. Each host shows its roles from the target profile
-        that Host Settings sends, how many of the add-ons it is expected to have were checked, and
-        as planned scope the areas the suite does not cover yet. The page only reads: it runs each
-        add-on's status verb, never asks for administrative access and belongs on the Cockpit host
-        from which the others are reached.
+        A tab "Needs attention" lists what to do on all hosts, each task with its reasons, its
+        evidence and a button into the add-on. Each host shows how many of the add-ons it is
+        expected to have were checked, its roles and expected checks from the target profile
+        that Host Settings sends, a check the profile names that its add-on does not report, and
+        as planned scope the areas the suite does not cover yet. The tab "Hosts and coverage"
+        has one row per host and one tile per Azentrius add-on, such as Cron Jobs, Image Update
+        Monitor, Update Gaps, Security Monitor and Host Settings: its state, its most important
+        figure and the age of its data. Hosts that do not answer, locked SSH keys, add-ons that
+        are missing on a host and data that is out of date are shown too. A tile folds out every
+        entry of its add-on in a table below its row, and each entry opens its own place in the
+        add-on. A switch shows only what needs attention, and a tile says when another host runs
+        a newer version of its add-on. The page only reads: it runs each add-on's status verb
+        and never asks for administrative access. It belongs on the Cockpit host from which the
+        others are reached and takes its hosts from Cockpit's host switcher, which Cockpit has
+        deprecated. It opens an add-on on another host only with AllowMultiHost, under which the
+        pages of all hosts share one browser session.
       </p>
       <p xml:lang="de">
-        Eine Cockpit-Seite mit einer Zeile je Host des Host-Umschalters und einer Kachel je
-        Azentrius-Add-on, etwa Cron Jobs, Image Update Monitor, Update Gaps und Security Monitor:
-        sein Zustand, seine wichtigste Kennzahl und das Alter seiner Daten. Auch Hosts, die nicht
-        antworten, gesperrte SSH-Schlüssel, Add-ons, die auf einem Host fehlen, und veraltete Daten
-        werden gezeigt. Ein Klick öffnet das Add-on auf seinem Host. Eine Kachel klappt alle
-        Einträge ihres Add-ons in einer Tabelle unter ihrer Zeile auf, und jeder Eintrag öffnet
-        seine eigene Stelle im Add-on; ein Schalter zeigt nur Auffälliges, und eine Kachel sagt,
-        wenn auf einem anderen Host eine neuere Version ihres Add-ons läuft. Ein Reiter
-        „Handlungsbedarf“ listet, was auf allen Hosts zu tun ist, jede Aufgabe mit ihren Gründen,
-        ihrem Nachweis und einem Knopf ins Add-on. Jeder Host zeigt seine Rollen aus dem
-        Sollprofil, das Host Settings meldet, wie viele der erwarteten Add-ons geprüft sind, und als
-        geplanten Umfang die Bereiche, die die Suite noch nicht abdeckt. Die Seite liest nur: Sie
-        ruft das Status-Verb jedes Add-ons auf, fragt nie nach Administratorzugriff und gehört auf
-        den Cockpit-Host, von dem aus die anderen erreicht werden.
+        Ein Reiter „Handlungsbedarf“ listet, was auf allen Hosts zu tun ist, jede Aufgabe mit
+        ihren Gründen, ihrem Nachweis und einem Knopf ins Add-on. Jeder Host zeigt, wie viele
+        der erwarteten Add-ons geprüft sind, seine Rollen und erwarteten Prüfungen aus dem
+        Sollprofil, das Host Settings meldet, eine im Profil genannte Prüfung, die ihr Add-on
+        nicht meldet, und als geplanten Umfang die Bereiche, die die Suite noch nicht abdeckt.
+        Der Reiter „Hosts und Abdeckung“ hat eine Zeile je Host und eine Kachel je
+        Azentrius-Add-on, etwa Cron Jobs, Image Update Monitor, Update Gaps, Security Monitor
+        und Host Settings: sein Zustand, seine wichtigste Kennzahl und das Alter seiner Daten.
+        Auch Hosts, die nicht antworten, gesperrte SSH-Schlüssel, Add-ons, die auf einem Host
+        fehlen, und veraltete Daten werden gezeigt. Eine Kachel klappt alle Einträge ihres
+        Add-ons in einer Tabelle unter ihrer Zeile auf, und jeder Eintrag öffnet seine eigene
+        Stelle im Add-on. Ein Schalter zeigt nur Auffälliges, und eine Kachel sagt, wenn auf
+        einem anderen Host eine neuere Version ihres Add-ons läuft. Die Seite liest nur: Sie
+        ruft das Status-Verb jedes Add-ons auf und fragt nie nach Administratorzugriff. Sie
+        gehört auf den Cockpit-Host, von dem aus die anderen erreicht werden, und nimmt ihre
+        Hosts aus dem Host-Umschalter, den Cockpit abgekündigt hat. Ein Add-on auf einem anderen
+        Host öffnet sie nur mit AllowMultiHost, unter dem die Seiten aller Hosts eine
+        Browsersitzung teilen.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
@@ -166,30 +201,33 @@
     <summary xml:lang="de">Was auf einem Server von wo erreichbar ist, wer sich anmeldet, was seine Container schwächt</summary>
     <description>
       <p>
-        The page shows per port whether it is reachable from the internet, the VPN, the private
-        network or only the server itself, for IPv4 and IPv6, with the rule that decides. It
-        reads UFW, Docker (which forwards published ports past UFW), nftables and iptables, and
-        optionally the Hetzner Cloud Firewall with a read-only token. It also shows the SSH
-        configuration and keys, the logins of the last 14 days, container settings that weaken
-        the boundary to the host, and CrowdSec and fail2ban if they are installed. For fail2ban
-        it shows what each jail watches, whom it bans and where a ban does not reach: Docker
-        forwards published ports past a ban at the host's input. A status for the Azentrius Status
-        Board and Cockpit's menu says where something needs a look, without addresses or user
-        names. It only reads; the one change it makes is marking a finding as expected in its own
-        file.
+        For Debian and Ubuntu servers, the page assesses per port whether it is reachable from
+        the internet, the VPN, the private network or only the server itself, for IPv4 and IPv6,
+        with the rule that decides. The assessment rests on the server's own data: its addresses
+        and listening sockets, UFW, Docker (which forwards published ports past UFW), nftables
+        and iptables, and optionally the Hetzner Cloud Firewall, read with a read-only token. No
+        port is tested from outside. It also shows the SSH configuration and keys, the logins of
+        the last 14 days, container settings that weaken the boundary to the host, and CrowdSec
+        and fail2ban if they are installed. It only reads; the one change it makes is marking a
+        finding as expected in its own file. For fail2ban it shows what each jail watches, whom
+        it bans and where a ban does not reach: Docker forwards published ports past a ban at
+        the host's input. A status for the Azentrius Status Board and Cockpit's menu says where
+        something needs a look, without addresses or user names.
       </p>
       <p xml:lang="de">
-        Die Seite zeigt je Port, ob er aus dem Internet, dem VPN, dem Privatnetz oder nur vom
-        Server selbst erreichbar ist, für IPv4 und IPv6, mit der Regel, die entscheidet. Sie
-        liest UFW, Docker (das veröffentlichte Ports an UFW vorbei weiterleitet), nftables und
-        iptables und auf Wunsch die Hetzner Cloud Firewall mit einem nur lesenden Token. Dazu
-        zeigt sie die SSH-Konfiguration und Schlüssel, die Anmeldungen der letzten 14 Tage,
-        Einstellungen von Containern, die die Grenze zum Host schwächen, und CrowdSec und
-        fail2ban, wenn sie installiert sind. Bei fail2ban zeigt sie, was jedes Jail beobachtet, wen
+        Für Server mit Debian und Ubuntu bewertet die Seite je Port, ob er aus dem Internet, dem
+        VPN, dem Privatnetz oder nur vom Server selbst erreichbar ist, für IPv4 und IPv6, mit
+        der Regel, die entscheidet. Die Bewertung stützt sich auf die Daten des Servers selbst:
+        seine Adressen und lauschenden Sockets, UFW, Docker (das veröffentlichte Ports an UFW
+        vorbei weiterleitet), nftables und iptables und auf Wunsch die Hetzner Cloud Firewall,
+        gelesen mit einem nur lesenden Token. Von außen wird kein Port getestet. Dazu zeigt sie
+        die SSH-Konfiguration und Schlüssel, die Anmeldungen der letzten 14 Tage, Einstellungen
+        von Containern, die die Grenze zum Host schwächen, und CrowdSec und fail2ban, wenn sie
+        installiert sind. Sie liest nur; die einzige Änderung ist, einen Befund in ihrer eigenen
+        Datei als erwartet zu markieren. Bei fail2ban zeigt sie, was jedes Jail beobachtet, wen
         es sperrt und wo eine Sperre nicht greift: Docker leitet veröffentlichte Ports an einer
-        Sperre am Eingang des Hosts vorbei. Ein Status für das Azentrius Status Board und Cockpits
-        Menü meldet, wo etwas zu prüfen ist, ohne Adressen oder Benutzernamen. Sie liest nur; die
-        einzige Änderung ist, einen Befund in ihrer eigenen Datei als erwartet zu markieren.
+        Sperre am Eingang des Hosts vorbei. Ein Status für das Azentrius Status Board und
+        Cockpits Menü meldet, wo etwas zu prüfen ist, ohne Adressen oder Benutzernamen.
       </p>
     </description>
     <extends>org.cockpit_project.cockpit</extends>
@@ -205,28 +243,37 @@
     <id>de.azentrius.host_settings</id>
     <pkgname>cockpit-host-settings</pkgname>
     <name>Host Settings</name>
-    <summary>Messages through ntfy or e-mail when an Azentrius add-on on a server needs attention</summary>
-    <summary xml:lang="de">Nachrichten per ntfy oder E-Mail, wenn ein Azentrius-Add-on auf einem Server Aufmerksamkeit braucht</summary>
+    <summary>Target profile, watchdog and ntfy or e-mail messages on findings and coverage gaps</summary>
+    <summary xml:lang="de">Sollprofil, Wächter und Nachrichten per ntfy oder E-Mail zu Befunden und Prüflücken</summary>
     <description>
       <p>
         Every 5 minutes the notifier reads the status of the Azentrius add-ons on the server,
         through the status contract they share, and sends a message through ntfy, e-mail or both
-        when a finding turns to a warning or a danger, and when it is OK again. The messages hold
-        only what the add-ons report and the server's name. The page sets up the channels, shows
-        the commands the ntfy server needs for this server's user, topic and token, and checks that
-        the topic is closed to anyone without a login. An external watchdog (Healthchecks or Uptime
-        Kuma) can get a signal after every run, so that a notifier that stops or fails is noticed.
-        The notifier runs as a user of its own, never as root.
+        when a finding turns to a warning or a danger, and when it is OK again. With a target
+        profile (the server's roles and the add-ons and checks they expect) it also tells when
+        an expected check can no longer be made, and when it can again; Status Board reads the
+        profile from it. The messages hold only what the add-ons report and the server's name.
+        The page sets up the channels and the profile, shows the commands the ntfy server needs
+        for this server's user, topic and token, checks that the topic is closed to anyone
+        without a login, and shows whether each channel accepted its last message. An external
+        watchdog (Healthchecks or Uptime Kuma) can get a signal after every run, so that a
+        notifier that stops or fails is noticed. Neither the watchdog nor a channel can tell
+        whether someone read a message. The notifier runs as a user of its own, never as root.
       </p>
       <p xml:lang="de">
-        Alle 5 Minuten liest der Notifier den Status der Azentrius-Add-ons auf dem Server über den
-        gemeinsamen Status-Vertrag und schickt eine Nachricht per ntfy, E-Mail oder beides, wenn ein
-        Befund zur Warnung oder Gefahr wird und wenn er wieder in Ordnung ist. Die Nachrichten
-        enthalten nur, was die Add-ons melden, und den Namen des Servers. Die Seite richtet die Kanäle
-        ein, zeigt die Befehle, die der ntfy-Server für Benutzer, Thema und Token dieses Servers
-        braucht, und prüft, dass das Thema ohne Anmeldung geschlossen ist. Ein externer Wächter
-        (Healthchecks oder Uptime Kuma) kann nach jedem Lauf ein Signal bekommen, damit ein Notifier,
-        der ausfällt oder scheitert, bemerkt wird. Der Notifier läuft als eigener Benutzer, nie als
+        Alle 5 Minuten liest der Notifier den Status der Azentrius-Add-ons auf dem Server über
+        den gemeinsamen Status-Vertrag und schickt eine Nachricht per ntfy, E-Mail oder beides,
+        wenn ein Befund zur Warnung oder Gefahr wird und wenn er wieder in Ordnung ist. Mit
+        einem Sollprofil (die Rollen des Servers und die Add-ons und Prüfungen, die sie
+        erwarten) meldet er auch, wenn eine erwartete Prüfung nicht mehr möglich ist und wenn
+        sie wieder möglich ist; Status Board liest das Profil von ihm. Die Nachrichten enthalten
+        nur, was die Add-ons melden, und den Namen des Servers. Die Seite richtet die Kanäle und
+        das Profil ein, zeigt die Befehle, die der ntfy-Server für Benutzer, Thema und Token
+        dieses Servers braucht, prüft, dass das Thema ohne Anmeldung geschlossen ist, und zeigt,
+        ob jeder Kanal seine letzte Nachricht angenommen hat. Ein externer Wächter (Healthchecks
+        oder Uptime Kuma) kann nach jedem Lauf ein Signal bekommen, damit ein Notifier, der
+        ausfällt oder scheitert, bemerkt wird. Ob jemand eine Nachricht gelesen hat, können
+        weder der Wächter noch ein Kanal sagen. Der Notifier läuft als eigener Benutzer, nie als
         root.
       </p>
     </description>

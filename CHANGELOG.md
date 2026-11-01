@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.6.2 – 2026-11-01
+
+The catalog describes Status Board 0.4.0, Host Settings 0.3.0, Update Gaps 0.7.2 and Cron Jobs
+2.11.0, and says for every add-on what it covers and where it stops.
+
+- **Catalog:** each entry joins the paragraphs of its add-on's metainfo, as the catalog's own
+  comment asks: Status Board with what needs attention, the coverage and the target profiles
+  first, and the deprecated host switcher as a limit; Host Settings with the target profile, the
+  coverage messages and the watchdog, and that neither a channel nor the watchdog shows that
+  someone read a message; Security Monitor for Debian and Ubuntu, assessed from the server's own
+  data with no port tested from outside; Update Gaps working from apt and dpkg on Debian and
+  Ubuntu, with no complete inventory of security issues; Image Update Monitor changing only
+  containers started with Docker Compose, with dumps that are no complete backup; Cron Jobs with
+  exit code and output only for the runs it records. Security Monitor and Image Update Monitor
+  take the clarified texts of their `main`, which hold for their released versions as well. In
+  English and German. The package is unchanged apart from the catalog.
+
 ## 1.6.1 – 2026-11-01
 
 The catalog describes what Status Board 0.3.0, Security Monitor 0.4.0 and Host Settings 0.2.0 do.
